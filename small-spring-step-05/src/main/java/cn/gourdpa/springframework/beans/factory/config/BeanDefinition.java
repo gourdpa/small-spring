@@ -1,11 +1,19 @@
 package cn.gourdpa.springframework.beans.factory.config;
 
+import cn.gourdpa.springframework.beans.ProperValues;
+
 public class BeanDefinition {
     private Class beanClass;
-    private String beanName;
+    private ProperValues properValues;
+
 
     public BeanDefinition(Class beanClass) {
         this.beanClass = beanClass;
+    }
+
+    public BeanDefinition(Class beanClass, ProperValues properValues) {
+        this.beanClass = beanClass;
+        this.properValues = properValues;
     }
 
     public Class getBeanClass() {
@@ -16,11 +24,11 @@ public class BeanDefinition {
         this.beanClass = beanClass;
     }
 
-    public String getBeanName() {
-        return beanName;
+    public ProperValues getProperValues() {
+        return properValues;
     }
 
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
+    public void setProperValues(ProperValues properValues) {
+        this.properValues = properValues;
     }
 }
