@@ -1,5 +1,6 @@
 package cn.gourdpa.springframework.beans.factory.support;
 
+import cn.gourdpa.springframework.beans.BeansException;
 import cn.gourdpa.springframework.beans.factory.BeanFactory;
 import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
 
@@ -19,7 +20,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     @Override
-    public Object getBean(String beanName, Object... args) {
+    public Object getBean(String beanName, Object... args) throws BeansException {
         Object singleton = getSingleton(beanName);
         if (null != singleton) {
             return singleton;

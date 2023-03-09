@@ -1,7 +1,9 @@
 package cn.gourdpa.springframework.beans.factory;
 
-public interface BeanFactory {
-    Object getBean(String beanName);
+import cn.gourdpa.springframework.beans.BeansException;
 
-    Object getBean(String beanName, Object... args);
+public interface BeanFactory {
+    Object getBean(String beanName) throws BeansException;
+
+    Object getBean(String beanName, Object... args) throws BeansException;
 }

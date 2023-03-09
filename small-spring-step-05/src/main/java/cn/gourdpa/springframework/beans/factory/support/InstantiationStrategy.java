@@ -8,5 +8,5 @@ import java.lang.reflect.Constructor;
  * bean实例化接口
  */
 public interface InstantiationStrategy {
-    Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor ctor, Object[] args);
+    Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor constructor, Object[] args);
 }

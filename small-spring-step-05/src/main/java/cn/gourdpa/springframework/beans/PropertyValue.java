@@ -1,10 +1,10 @@
 package cn.gourdpa.springframework.beans;
 
-public class ProperValue {
+public class PropertyValue {
     private String name;
     private Object value;
 
-    public ProperValue(String name, Object value) {
+    public PropertyValue(String name, Object value) {
         this.name = name;
         this.value = value;
     }

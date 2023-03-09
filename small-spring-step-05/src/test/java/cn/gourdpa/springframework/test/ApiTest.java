@@ -1,7 +1,7 @@
 package cn.gourdpa.springframework.test;
 
-import cn.gourdpa.springframework.beans.ProperValue;
-import cn.gourdpa.springframework.beans.ProperValues;
+import cn.gourdpa.springframework.beans.PropertyValue;
+import cn.gourdpa.springframework.beans.PropertyValues;
 import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
 import cn.gourdpa.springframework.beans.factory.config.BeanReference;
 import cn.gourdpa.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -15,17 +15,17 @@ public class ApiTest {
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
         //注册userDao
-        beanFactory.registryBeanDefinition("userDao",new BeanDefinition(UserDao.class));
+        beanFactory.registerBeanDefinition("userDao",new BeanDefinition(UserDao.class));
 
 
-        ProperValues properValues = new ProperValues();
-        properValues.addProperValue(new ProperValue("uId","10001"));
-        properValues.addProperValue(new ProperValue("userDao",new BeanReference("userDao")));
+        PropertyValues propertyValues = new PropertyValues();
+        propertyValues.addProperValue(new PropertyValue("uId","10001"));
+        propertyValues.addProperValue(new PropertyValue("userDao",new BeanReference("userDao")));
 
-        BeanDefinition beanDefinition = new BeanDefinition(UserService.class, properValues);
-        beanFactory.registryBeanDefinition("userService",beanDefinition);
+        BeanDefinition beanDefinition = new BeanDefinition(UserService.class, propertyValues);
+        beanFactory.registerBeanDefinition("userService",beanDefinition);
 
         UserService userService =(UserService) beanFactory.getBean("userService");
-        System.out.println(userService.queryUserName());
+        userService.queryUserInfo();
     }
 }

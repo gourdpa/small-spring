@@ -8,19 +8,20 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SimpleInstantiationStrategy implements InstantiationStrategy {
     @Override
-    public Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor ctor, Object[] args) {
+    public Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor constructor, Object[] args) {
         Class clazz = beanDefinition.getBeanClass();
-
+        Object bean = null;
         try {
-            if (null == ctor) {
-                return clazz.newInstance();
+            if (null != constructor) {
+                bean = clazz.getDeclaredConstructor(constructor.getParameterTypes()).newInstance(args);
             } else {
-                return clazz.getDeclaredConstructor().newInstance(args);
+                bean = clazz.newInstance();
             }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                  NoSuchMethodException e) {
-            throw new BeansException("", e);
+            throw new BeansException("Faild to instantiate [" + clazz.getName() + "]", e);
         }
+        return bean;
 
     }
 }
