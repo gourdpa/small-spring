@@ -5,7 +5,7 @@ import cn.hutool.core.lang.Assert;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DefaultResouceLoader implements ResourceLoader{
+public class DefaultResourceLoader implements ResourceLoader{
     @Override
     public Resource getResource(String location) {
         Assert.isNull(location,"Location must be not null");
