@@ -28,21 +28,25 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try {
             try (InputStream inputStream = resource.getInputStream()) {
-
+                doLoadBeanDefinitions(inputStream);
             }
-        }catch (IOException  e){
+        }catch (IOException | ClassNotFoundException e){
             throw new BeansException("IOException parsing XML document from " + resource, e);
         }
     }
 
     @Override
     public void loadBeanDefinitions(Resource... resources) throws BeansException {
-
+        for (Resource resource : resources) {
+            loadBeanDefinitions(resource);
+        }
     }
 
     @Override
     public void loadBeanDefinitions(String location) throws BeansException {
-
+        ResourceLoader resourceLoader = getResourceLoader();
+        Resource resource = resourceLoader.getResource(location);
+        loadBeanDefinitions(resource);
     }
 
     protected  void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException{
@@ -89,9 +93,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 beanDefinition.getPropertyValues().addProperValue(propertyValue);
             }
 
-            if (getRegistry().containsBean)
+            if (getRegistry().containsBeanDefinition(beanName)){
+                throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
+            }
 
-
+            getRegistry().registerBeanDefinition(beanName,beanDefinition);
         }
     }
 }
