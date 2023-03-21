@@ -6,7 +6,6 @@ import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
 import cn.gourdpa.springframework.beans.factory.config.BeanReference;
 import cn.gourdpa.springframework.beans.factory.support.AbstractBeanDefinitionReader;
 import cn.gourdpa.springframework.beans.factory.support.BeanDefinitionRegistry;
-import cn.gourdpa.springframework.core.io.BeanDefinitionReader;
 import cn.gourdpa.springframework.core.io.Resource;
 import cn.gourdpa.springframework.core.io.ResourceLoader;
 import cn.hutool.core.util.StrUtil;
@@ -51,12 +50,21 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
     protected  void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException{
         Document doc = XmlUtil.readXML(inputStream);
+
+        String nodeName1 = doc.getNodeName();
+
         Element root = doc.getDocumentElement();
+
         NodeList childNodes = root.getChildNodes();
+
         for (int i = 0; i < childNodes.getLength(); i++) {
             //判断元素
+            Node item = childNodes.item(i);
+            int length = childNodes.getLength();
             if (childNodes.item(i) instanceof Element) continue;
             //判断对象
+            String nodeName = childNodes.item(i).getNodeName();
+            System.out.println(nodeName);
             if (!"bean".equals(childNodes.item(i).getNodeName())) continue;
 
             //解析标签

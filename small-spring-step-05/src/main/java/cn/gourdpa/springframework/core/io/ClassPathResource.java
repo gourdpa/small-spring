@@ -20,7 +20,7 @@ public class ClassPathResource implements Resource {
     }
 
     public ClassPathResource(String path, ClassLoader classLoader) {
-        Assert.isNull(path, "Path must not be null");
+        Assert.notNull(path, "Path must not be null");
 
         this.path = path;
         this.classLoader = (classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader());
