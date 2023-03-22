@@ -6,7 +6,7 @@ import java.util.List;
 public class PropertyValues {
     private List<PropertyValue> propertyValueList = new ArrayList<>();
 
-    public void addProperValue(PropertyValue propertyValue) {
+    public void addPropertyValue(PropertyValue propertyValue) {
         this.propertyValueList.add(propertyValue);
     }
 

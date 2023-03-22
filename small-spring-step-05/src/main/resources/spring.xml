@@ -2,7 +2,7 @@
 <beans>
     <bean id="userDao" class="cn.gourdpa.springframework.test.dao.UserDao"/>
     <bean id="userService" class="cn.gourdpa.springframework.test.service.UserService">
-        <property name="uId" vlaue="10001"></property>
+        <property name="uId" value="10001"></property>
         <property name="userDao" ref="userDao"/>
     </bean>
 </beans>
