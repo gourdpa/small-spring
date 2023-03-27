@@ -3,8 +3,15 @@ package cn.gourdpa.springframework.beans.factory.support;
 import cn.gourdpa.springframework.beans.BeansException;
 import cn.gourdpa.springframework.beans.factory.BeanFactory;
 import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
+import cn.gourdpa.springframework.beans.factory.config.BeanPostProcessor;
+import cn.gourdpa.springframework.beans.factory.config.ConfigurableBeanFactory;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory  {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
     @Override
     public Object getBean(String beanName) {
         return doGetBean(beanName, null);
@@ -13,6 +20,11 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     @Override
     public Object getBean(String beanName, Object... args) {
         return doGetBean(beanName,args);
+    }
+
+    @Override
+    public <T> T getBean(String beanName, Class<T> requiredType) throws BeansException {
+        return (T) getBean(beanName);
     }
 
     private Object doGetBean(String beanName, Object[] args) {
@@ -31,5 +43,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args);
 
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.remove(beanPostProcessor);
+        this.beanPostProcessors.add(beanPostProcessor);
+    }
 
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
+    }
 }
