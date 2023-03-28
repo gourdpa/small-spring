@@ -50,14 +50,4 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     public String[] getBeanDefinitionNames() {
         return beanDefinitionMap.keySet().toArray(new String[0]);
     }
-
-    @Override
-    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
-        return null;
-    }
-
-    @Override
-    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
-
-    }
 }

@@ -6,6 +6,8 @@ import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
 import cn.gourdpa.springframework.beans.factory.config.BeanReference;
 import cn.gourdpa.springframework.beans.factory.support.DefaultListableBeanFactory;
 import cn.gourdpa.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import cn.gourdpa.springframework.common.MyBeanFactoryPostProcessor;
+import cn.gourdpa.springframework.common.MyBeanPostProcessor;
 import cn.gourdpa.springframework.core.io.DefaultResourceLoader;
 import cn.gourdpa.springframework.core.io.Resource;
 import cn.gourdpa.springframework.dao.UserDao;
@@ -85,5 +87,26 @@ public class ApiTest {
         UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
         String result = userService.queryUserInfo();
         System.out.println("测试结果：" + result);
+    }
+
+
+    @Test
+    public void test_BeanFactoryPostProcessorAndBeanPostProcessor(){
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions("classpath:spring.xml");
+
+        MyBeanFactoryPostProcessor myBeanFactoryPostProcessor = new MyBeanFactoryPostProcessor();
+        myBeanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+
+        MyBeanPostProcessor myBeanPostProcessor = new MyBeanPostProcessor();
+        beanFactory.addBeanPostProcessor(myBeanPostProcessor);
+
+        UserService userService = (UserService) beanFactory.getBean("userService",UserService.class);
+        String result = userService.queryUserInfo();
+        System.out.println(result);
+
+
     }
 }
