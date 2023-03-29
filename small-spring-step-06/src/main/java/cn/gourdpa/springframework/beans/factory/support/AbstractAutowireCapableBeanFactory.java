@@ -22,8 +22,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         try {
             //实例化
             object = createBeanInstance(beanName, beanDefinition, args);
-            applyPropertyValues(beanName, object, beanDefinition);
             //填充属性
+            applyPropertyValues(beanName, object, beanDefinition);
+            // 执行bean的初始化方法和BeanPostProcessor的前置和后置方法
+            object = initializeBean(beanName, object, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
@@ -74,7 +76,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         //1.执行BeanPostProcessor Before处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         // TODO
-        invokeInitMethods(beanName,wrappedBean,beanDefinition);
+        invokeInitMethods(beanName, wrappedBean, beanDefinition);
         //2.执行BeanPostProcessor After处理
         wrappedBean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
         return wrappedBean;
@@ -88,11 +90,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
         for (BeanPostProcessor processor : getBeanPostProcessors()) {
-            Object current = processor.postProcessBeforeInitialization(result,beanName);
+            Object current = processor.postProcessBeforeInitialization(result, beanName);
             if (null == current) {
                 return result;
             }
-            result =current;
+            result = current;
         }
         return result;
     }
@@ -100,7 +102,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
-        for (BeanPostProcessor processor: getBeanPostProcessors()) {
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
             Object current = processor.postProcessAfterInitialization(result, beanName);
             if (null == current) {
                 return result;
@@ -108,6 +110,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             result = current;
         }
         return result;
-        
+
     }
 }

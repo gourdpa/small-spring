@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="userDao" class="cn.gourdpa.springframework.dao.UserDao"/>
+    <bean id="userService" class="cn.gourdpa.springframework.service.UserService">
+        <property name="uId" value="10001"></property>
+        <property name="company" value="腾讯"></property>
+        <property name="location" value="深圳"></property>
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean class="cn.gourdpa.springframework.common.MyBeanFactoryPostProcessor"/>
+    <bean class="cn.gourdpa.springframework.common.MyBeanPostProcessor"/>
+
+</beans>

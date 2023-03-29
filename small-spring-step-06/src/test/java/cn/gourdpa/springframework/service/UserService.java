@@ -10,7 +10,7 @@ public class UserService {
     private UserDao userDao;
 
     public String queryUserInfo() {
-        return userDao.queryUserName(uId);
+        return userDao.queryUserName(uId) + "," + company + "," + location;
     }
 
     public String getuId() {

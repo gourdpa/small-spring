@@ -8,6 +8,7 @@ import cn.gourdpa.springframework.beans.factory.support.DefaultListableBeanFacto
 import cn.gourdpa.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import cn.gourdpa.springframework.common.MyBeanFactoryPostProcessor;
 import cn.gourdpa.springframework.common.MyBeanPostProcessor;
+import cn.gourdpa.springframework.context.support.ClassPathXmlApplicationContext;
 import cn.gourdpa.springframework.core.io.DefaultResourceLoader;
 import cn.gourdpa.springframework.core.io.Resource;
 import cn.gourdpa.springframework.dao.UserDao;
@@ -106,7 +107,13 @@ public class ApiTest {
         UserService userService = (UserService) beanFactory.getBean("userService",UserService.class);
         String result = userService.queryUserInfo();
         System.out.println(result);
+    }
 
-
+    @Test
+    public void test_xmlContext() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:springPostProcessor.xml");
+        UserService userService = classPathXmlApplicationContext.getBean("userService", UserService.class);
+        String result = userService.queryUserInfo();
+        System.out.println(result);
     }
 }
