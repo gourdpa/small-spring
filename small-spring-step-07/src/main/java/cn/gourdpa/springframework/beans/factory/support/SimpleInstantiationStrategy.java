@@ -6,21 +6,21 @@ import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class SimpleInstantiationStrategy implements InstantiationStrategy{
+public class SimpleInstantiationStrategy implements InstantiationStrategy {
     @Override
     public Object instantiate(String beanName, BeanDefinition beanDefinition, Constructor ctor, Object[] args) throws BeansException {
-        Class clazz = beanDefinition.getClazz();
+        Class clazz = beanDefinition.getBeanClass();
+        Object bean;
         try {
-            Object o = clazz.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            if (null != ctor) {
+                bean = clazz.getDeclaredConstructor(ctor.getParameterTypes()).newInstance(args);
+            } else {
+                bean = clazz.getDeclaredConstructor().newInstance();
+            }
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new BeansException("Failed to instantiate [" + clazz.getName() + "]");
         }
-        return null;
+        return bean;
     }
 }

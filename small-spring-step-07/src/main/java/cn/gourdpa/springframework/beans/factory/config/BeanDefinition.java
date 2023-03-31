@@ -6,25 +6,25 @@ import cn.gourdpa.springframework.beans.PropertyValues;
  * bean定义
  */
 public class BeanDefinition {
-    private Class clazz;
+    private Class beanClass;
     private PropertyValues propertyValues;
 
-    public BeanDefinition(Class clazz) {
-        this.clazz = clazz;
+    public BeanDefinition(Class beanClass) {
+        this.beanClass = beanClass;
         this.propertyValues = new PropertyValues();
     }
 
-    public BeanDefinition(Class clazz, PropertyValues propertyValues) {
-        this.clazz = clazz;
+    public BeanDefinition(Class beanClass, PropertyValues propertyValues) {
+        this.beanClass = beanClass;
         this.propertyValues = propertyValues != null ? propertyValues : new PropertyValues();
     }
 
-    public Class getClazz() {
-        return clazz;
+    public Class getBeanClass() {
+        return beanClass;
     }
 
-    public void setClazz(Class clazz) {
-        this.clazz = clazz;
+    public void setBeanClass(Class beanClass) {
+        this.beanClass = beanClass;
     }
 
     public PropertyValues getPropertyValues() {
