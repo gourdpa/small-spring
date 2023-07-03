@@ -7,4 +7,6 @@ public interface ConfigurableBeanFactory extends HierarchicaBeanFactory,Singleto
     String SCOPE_PROTOTYPE = "prototype";
 
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
+
+    void destroySingletons();
 }
