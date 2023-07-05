@@ -4,10 +4,7 @@ import cn.gourdpa.springframework.beans.BeansException;
 import cn.gourdpa.springframework.beans.PropertyValue;
 import cn.gourdpa.springframework.beans.PropertyValues;
 import cn.gourdpa.springframework.beans.factory.*;
-import cn.gourdpa.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import cn.gourdpa.springframework.beans.factory.config.BeanDefinition;
-import cn.gourdpa.springframework.beans.factory.config.BeanPostProcessor;
-import cn.gourdpa.springframework.beans.factory.config.BeanReference;
+import cn.gourdpa.springframework.beans.factory.config.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -29,6 +26,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
         Object bean;
         try {
+            // 判断是否返回代理Bean对象
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean) {
+                return bean;
+            }
             //实例化bean
             bean = createBeanInstance(beanName, beanDefinition, args);
             //填充属性
@@ -40,10 +42,29 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
         //注册实现了DisposableBean接口的bean对象
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+
+        //判断SCOPE_SINGLETON
         if (beanDefinition.isSingleton()) {
             addSingleton(beanName, bean);
         }
 
+        return bean;
+    }
+
+    public Object applyBeanPostProcessorBeforeInstantiation(Class<?> beanClass,String beanName) throws BeansException {
+        for (BeanPostProcessor processor: getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) processor).postProcessBeforeInstantiation(beanClass, beanName);
+                if(null!=result) return result;
+            }
+        }
+        return null;
+    }
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
         return bean;
     }
 
@@ -123,7 +144,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (StrUtil.isNotEmpty(initMethodName)) {
             Method initMethod = beanDefinition.getBeanClass().getMethod(initMethodName);
             if (null == initMethod) {
-                throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");
+                throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with "
+                        + "name '" + beanName + "'");
             }
             initMethod.invoke(wrappedBean);
         }

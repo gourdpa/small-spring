@@ -4,12 +4,21 @@ package cn.gourdpa.springframework.aop;
 import org.aopalliance.intercept.MethodInterceptor;
 
 public class AdvisedSupport {
+    private boolean proxyTargetClass = false;
     private TargetSource targetSource;
     private MethodInterceptor methodInterceptor;
     private MethodMatcher methodMatcher;
 
     public TargetSource getTargetSource() {
         return targetSource;
+    }
+
+    public boolean isProxyTargetClass() {
+        return proxyTargetClass;
+    }
+
+    public void setProxyTargetClass(boolean proxyTargetClass) {
+        this.proxyTargetClass = proxyTargetClass;
     }
 
     public void setTargetSource(TargetSource targetSource) {
