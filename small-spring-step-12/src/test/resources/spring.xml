@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean class="cn.gourdpa.springframework.test.event.ContextRefreshedEventListener"/>
+    <bean class="cn.gourdpa.springframework.test.event.CustomEventListener"/>
+    <bean class="cn.gourdpa.springframework.test.event.ContextClosedEventListener"/>
+</beans>
